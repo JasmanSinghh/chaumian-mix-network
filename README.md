@@ -10,4 +10,11 @@ Similar to Tor, messages are encrypted multiple times in "layers," each containi
 The research goal is to study the trade-off between the anonymity set and the end-to-end latency through traffic throughput analysis. 
 
 ## Components
-- 
+- `packet.py`: The shared cryptographic and routing infrastructure. Handles the PyNaCl (Libsodium) wrapping and unwrapping functions, key generation, and standardized routing header formatting.
+- `mixnode.py`: The core router implementation. Operates as a multithreaded server that receives incoming packets, holds them in a buffer until a specific batch size is reached, shuffles the batch to prevent timing correlation, peels off the outer cryptographic layer, and forwards the payload to the next hop.
+- `sender.py`: The client application responsible for generating the test traffic. Constructs the "onion" by taking a plaintext message and wrapping it in multiple layers of encryption corresponding to the reverse order of the chosen mix node path.
+- `receiver.py`: The final destination server that receives the fully decrypted payload from the exit node.
+- `driver.py`: The network orchestrator. Spins up multiple instances of mix nodes on different local ports to simulate the network topology, spawns concurrent sender threads to trigger batching thresholds, and handles the timing functions required for latency and throughput measurement.
+
+## Cryptography
+This project utilizes `PyNaCl` (Libsodium) and its `SealedBox` construct for layered public-key encryption. This approach leverages elliptic curve cryptography (Curve25519) to keep ciphertexts and keys extremely small, avoiding packet fragmentation while guaranteeing anonymous encryption that leaves no cryptographic trace of the sender. 
