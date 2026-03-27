@@ -5,22 +5,22 @@ from packet import unwrap_layer
 
 class MixNode(threading.Thread):
   def __init__(self, port, private_key, batch_size):
-    super().__init__90
+    super().__init__()
     self.port = port
     self.private_key = private_key
     self.batch_size = batch_size
     self.batch = []
-    self.lock = threading.lock()
+    self.lock = threading.Lock()
     self.sock = socket(socket.AF_INET, socket.SOCK_DGRAM)
     self.sock.bind(('127.0.0.1', self.port))
 
   def run(self):
-    print(f"MixNode listneing on {self.port}...")
+    print(f"MixNode listening on {self.port}...")
     while True:
       data, addr = self.sock.recvfrom(4096)
 
       with self.lock:
-        self.batcj.append(data)
+        self.batch.append(data)
         if len(self.batch) >= self.batch_size:
           self.process_batch()
 
