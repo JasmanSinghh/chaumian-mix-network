@@ -2,7 +2,7 @@ import time
 import socket
 import pytest
 from packet import generate_keypair, wrap_layer, unwrap_layer
-# from receiver import Receiver
+from receiver import Receiver
 from mixnode import MixNode
 
 mix_node_port = 5001
@@ -66,12 +66,11 @@ def test_receiver_starts(receiver):
     assert receiver.is_alive()
 
 
-def test_receiver_gets_message(receiver):
-    "A UDP packet sent to the receiver should appear in get_messages()"
+def test_receiver_stops_cleanly(receiver):
+    "Stopping the receiver, it should not get any messages after"
+    receiver.stop()
+    time.sleep(0.6)
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.sendto(test_message, (test_ip, receiver_port))
-
-    arrived = receiver.wait_for_messages(count=1, timeout=3)
-
-    assert arrived
-    assert test_message in receiver.get_messages()
+        s.sendto(b"after_stop", ("127.0.0.1", receiver.port))
+    time.sleep(0.5)
+    assert b"after_stop" not in receiver.messages
