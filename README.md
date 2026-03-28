@@ -15,6 +15,7 @@ The research goal is to study the trade-off between the anonymity set and the en
 - `sender.py`: The client application responsible for generating the test traffic. Constructs the "onion" by taking a plaintext message and wrapping it in multiple layers of encryption corresponding to the reverse order of the chosen mix node path.
 - `receiver.py`: The final destination server that receives the fully decrypted payload from the exit node.
 - `driver.py`: The network orchestrator. Spins up multiple instances of mix nodes on different local ports to simulate the network topology, spawns concurrent sender threads to trigger batching thresholds, and handles the timing functions required for latency and throughput measurement.
+- `test.py`: The testing module uses pytest to certify the functionality of system components, including mix nodes, receivers, packet handling, and end-to-end communication. Additional test cases can be used to verify reliability and performance as the system evolves. 
 
 ## Cryptography
 This project utilizes `PyNaCl` (Libsodium) and its `SealedBox` construct for layered public-key encryption. This approach leverages elliptic curve cryptography (Curve25519) to keep ciphertexts and keys extremely small, avoiding packet fragmentation while guaranteeing anonymous encryption that leaves no cryptographic trace of the sender. 
