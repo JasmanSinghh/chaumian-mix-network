@@ -1,4 +1,4 @@
-from socket import *
+import socket
 import threading
 import random
 from packet import unwrap_layer
@@ -11,7 +11,7 @@ class MixNode(threading.Thread):
     self.batch_size = batch_size
     self.batch = []
     self.lock = threading.Lock()
-    self.sock = socket(socket.AF_INET, socket.SOCK_DGRAM)
+    self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     self.sock.bind(('127.0.0.1', self.port))
 
   def run(self):
