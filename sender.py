@@ -15,8 +15,5 @@ class Sender:
                 next_ip, next_port, _ = self.nodes[len(self.nodes) - i]
                 payload = wrap_layer(payload, next_ip, next_port, pub_key)
         self.sock.sendto(payload, (self.nodes[0][0], self.nodes[0][1]))
-        
-
         first_ip, first_port, _ = self.nodes[0]
-        self.sock.sendto(payload, (first_ip, first_port))
         print(f"[sender] sent {len(payload)} bytes to first node {first_ip}:{first_port}")
