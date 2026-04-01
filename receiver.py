@@ -3,7 +3,7 @@ import threading
 import time
 
 class Receiver(threading.Thread):
-    def __init__(self, host="127.0.0.1", port=3000):
+    def __init__(self, host="127.0.0.1", port=9000):
         threading.Thread.__init__(self, daemon=True)
 
         self.host = host
