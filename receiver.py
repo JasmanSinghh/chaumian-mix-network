@@ -42,3 +42,6 @@ class Receiver(threading.Thread):
                 return True
             time.sleep(0.05)
         return False
+    
+    def get_messages(self):
+        return self.messages
