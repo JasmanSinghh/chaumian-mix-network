@@ -10,8 +10,9 @@ priv1, pub1 = generate_keypair()
 priv2, pub2 = generate_keypair()
 priv3, pub3 = generate_keypair()
 
-receiver = Receiver(host='127.0.0.1', port=9000)
+receiver = Receiver()
 receiver.start()
+print("Driver created receiver on port", receiver.port)
 
 node1 = MixNode(port=5001, private_key=priv1, batch_size=3)
 node2 = MixNode(port=5002, private_key=priv2, batch_size=3)
