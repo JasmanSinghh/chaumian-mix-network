@@ -10,6 +10,15 @@ class Receiver(threading.Thread):
         self.port = port
         self.messages = []
         self._stopped = threading.Event()
+        self.metrics = {
+            'sent_total': 0,
+            'recv_total': 0,
+            'dropped_total': 0,
+            'decrypt_fail_total': 0,
+            'batch_fill_time_ms': [],
+            'queue_depth': 0,
+            'forward_latency_ms': [],
+        }
 
         udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -30,6 +39,7 @@ class Receiver(threading.Thread):
             except socket.timeout:
                 continue
             stored_messages.append(packet)
+            self.metrics['recv_total'] += 1
         sock.close()
 
     def stop(self):
