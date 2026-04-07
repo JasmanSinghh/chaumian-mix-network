@@ -28,9 +28,11 @@ nodes = [
     ('127.0.0.1', 5003, pub3),
 ]
 sender = Sender(nodes)
-for i in range(3):
+for i in range(10):
     sender.send(f"message number {i}".encode(), '127.0.0.1', 9000)
 time.sleep(2)
-print("Receiver got:", receiver.get_messages())
+print("Receiver got:")
+for message in receiver.get_messages():
+    print(message.decode("utf-8"))
 
 
